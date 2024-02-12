@@ -5,6 +5,20 @@ class PhotosController < ApplicationController
     render({ :template => "photos/index" })
   end
 
+  def create
+    @new_photo = Photo.new
+    @new_photo.image = params.fetch("input_image")
+    @new_photo.caption = params.fetch("input_caption")
+    @new_photo.owner_id = params.fetch("input_owner_id")
+
+    if @new_photo.valid?
+      @new_photo.save
+      redirect_to("/photos/#{@new_photo.id}", { :notice => "Photo created successfully." })
+    else
+      redirect_to("/photos", { :notice => "Photo failed to be created." })
+    end
+  end
+
   def show
     path_id = params.fetch("path_id")
     @photo = Photo.where({ :id => path_id }).at(0)
