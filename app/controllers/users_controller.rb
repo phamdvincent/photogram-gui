@@ -8,6 +8,8 @@ class UsersController < ApplicationController
     username = params.fetch("username")
     user_id = User.where({ :username => username}).at(0).id
     @user = User.where({ :id => user_id}).at(0)
+
+    @own_photos = @user.own_photos
     render({ :template => "users/show" })
   end
 end
